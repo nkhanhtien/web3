@@ -1,0 +1,59 @@
+version: '3'
+
+services:
+    ganache:
+        image: "trufflesuite/ganache-cli"
+        ports: 
+            - 8545:8545
+        
+    truffle-dapp:
+        build: 
+            context : ../
+            dockerfile_inline: |
+                FROM node:18
+                RUN apt-get update && apt-get install --no-install-recommends -y bash-completion vim
+                RUN npm install -g npm@latest
+                RUN npm rebuild
+                RUN npm install -g node-gyp-build
+                RUN npm install --global --quiet npm truffle
+                
+                WORKDIR /home/supply-chain-dapp/
+                COPY client ./client
+                WORKDIR client/
+                RUN rm -rf node_modules
+                RUN npm install
+                
+                
+        environment:
+            - BIND_SRC_PATH=${BIND_SRC_PATH}
+            
+
+        
+        volumes:
+            - type: bind
+              source: ${BIND_SRC_PATH}
+              target: /home/supply-chain-dapp/client/src
+            - type: bind
+              source: ${BIND_CONTRACT_PATH}
+              target: /home/supply-chain-dapp/smartcontracts
+              
+        # healthcheck:
+        #     test: curl -sf -X POST --data '{"jsonrpc":"2.0","method":"eth_blockNumber","params":[],"id":1}' 192.168.17.36:8545
+        #     interval: 5s
+        #     timeout: 5s
+        #     retries: 5
+
+        command: > 
+            sh -c "cd /home/supply-chain-dapp/smartcontracts && 
+            rm -rf build &&
+            truffle compile &&
+            truffle migrate &&
+            ls build/contracts &&
+            cp -R build/contracts /home/supply-chain-dapp/client/src/ &&
+            npm config set bin-links false &&
+            cd ../client && 
+            npm start"
+
+        ports:
+            - 24012:24012
+            - 3000:3000
