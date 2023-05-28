@@ -1,7 +1,7 @@
 module.exports = {
   networks: {
     development: {
-      host: "INPUT_YOUR_IP_ADDRESS_HERE",
+      host: "127.0.0.1",
       port: 8545,
       network_id: "*",
     },
@@ -9,7 +9,7 @@ module.exports = {
 
   compilers: {
     solc: {
-      version: "0.8.18"
-    }
-  }
+      version: "0.8.18",
+    },
+  },
 };
