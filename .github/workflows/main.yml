@@ -17,6 +17,11 @@ jobs:
           ls ${{ github.workspace }}
       - run: echo "🍏 This job's status is ${{ job.status }}."
       - name: Send logs to Sumo Logic
-        run: |
-          curl -X POST -H "Content-Type: text/plain" -d "@path/to/log/file.log" "https://collectors.jp.sumologic.com/receiver/v1/http/ZaVnC4dhaV2L67Xe22tX7QttCmKqOwnJ8LrOWw5t065FIRfZWU2WjAP_TLyAw7rQEJOBn3zFhy0QpND9CbFxD3oyjaF7ZsxMH_VZm0jIXH_J2laxUCvjMQ=="
-          echo "Sending logs to Sumo Logic"
+        uses: SumoLogic/sumologic-github-action@v1
+        with:
+          accessId: ${{ suPGmwOmnklVnb }}
+          accessKey: ${{ eThE8eZ4CGJag0n6UcinPhcUWZHMrQnovIGcsL7mHZECi3Sp1qz9qAqWmVVStBm7 }}
+          collectorUrl: "https://collectors.jp.sumologic.com/receiver/v1/http/ZaVnC4dhaV2L67Xe22tX7QttCmKqOwnJ8LrOWw5t065FIRfZWU2WjAP_TLyAw7rQEJOBn3zFhy0QpND9CbFxD3oyjaF7ZsxMH_VZm0jIXH_J2laxUCvjMQ=="
+          sourceCategory: "github-actions"
+          sourceName: "my-repo"
+          logFile: "./path/to/log/file.log"
