@@ -17,7 +17,7 @@ jobs:
           ls ${{ github.workspace }}
       - run: echo "🍏 This job's status is ${{ job.status }}."
       - name: Send logs to Sumo Logic
-        uses: SumoLogic/sumologic-github-action@v1
+        uses: web3/.github/workflows/main.yml@v1
         with:
           accessId: suPGmwOmnklVnb
           accessKey: eThE8eZ4CGJag0n6UcinPhcUWZHMrQnovIGcsL7mHZECi3Sp1qz9qAqWmVVStBm7
